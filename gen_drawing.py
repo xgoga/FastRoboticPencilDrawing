@@ -1,20 +1,19 @@
-# add a folder with a library to the path
+# import libraries
 import time
 import datetime
 import sys, os
-sys.path.append(".")
-sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "./geneticlib")
-# import all functions from the genetic library
-from geneticlib.genetic import *
-from genutils.utils import *
-# import standard libraries
 import numpy as np
 import matplotlib.pyplot as plt
+# add a folder with a library to the path
+sys.path.append(".")
+sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "./geneticlib")
+# import functions from the genetic library
+from genetic.utils import *
 from PIL import Image, ImageDraw, ImageOps
 from image4layer import Image4Layer
 
 # ------------------------------ USER PARAMETERS --------------------------
-img_str = "darwin.jpg"  # image to load (from ./images folder)
+img_str = "rose.jpg"  # image to load (from ./images folder)
 basewidth = 256 # output size of generated image 
 deterministic_mode = True  # reproducible results [True, False]
 generate_gif = True # generate animation [True, False]
@@ -25,6 +24,7 @@ NEvo = 10 # number of evolution steps per one optimized object
 MAX_BUFF = 5  # stopping evolution if there are no changes (MAX_BUFF consecutive evolution steps)
 MAX_ADDMUT = 5 # [%] - maximum aditive mutation range
 LINE_WIDTH = 2 # [px] line width
+MLTPL_EVO_PARAMS = 1 # parameter multiplier
 BLEND_MODE = "darken" # available options: ["normal", "multiply", "screen", "overlay", "darken", "lighten", "color_dodge", "color_burn", "hard_light", "soft_light", "difference", "exclusion", "hue", "saturation", "color", "luminosity", "vivid_light", "pin_light", "linear_dodge", "subtract"]
 # -------------------------------------------------------------------------
 
@@ -60,15 +60,14 @@ plt.style.use('seaborn-paper')
 plt.rcParams['font.family'] = 'serif'
 plt.rcParams['axes.linewidth'] = 0.1 # frame boundaries in graphs
 
-# load image and convert it to RGBA colour space
+# load image and convert it to greyscale
 orig_img = Image.open("./images/" + img_str).convert('L')
 # resize image to specified size with aspect ratio preserved
 wpercent = (basewidth/float(orig_img.size[0]))
 hsize = int((float(orig_img.size[1])*float(wpercent)))
 orig_img = orig_img.resize((basewidth,hsize), Image.ANTIALIAS)
-# create inverted image
-# orig_img = ImageOps.invert(orig_img)
-# convert to numpy (for convenience)
+
+# convert to numpy array
 orig_img = np.asarray(orig_img, dtype=int)
 # start the timer
 start_time = time.time()
@@ -77,8 +76,7 @@ start_time = time.time()
 # generate empty image with background colour
 gen_img = Image.new('RGBA', (orig_img.shape[1], orig_img.shape[0]), COLOUR_WHITE) # canvas
 gen_img = gen_img.convert('L') # canvas
-# create inverted image
-# invgen_img = ImageOps.invert(gen_img)
+
 # definition of search space limitations (for one polygon only)
 OneSpace = np.concatenate((np.zeros((1,4)),           # mininum
                         np.array([[orig_img.shape[0]-1, orig_img.shape[0]-1, orig_img.shape[1]-1, orig_img.shape[1]-1]])), axis=0)  # maximum
@@ -87,7 +85,7 @@ Amp = OneSpace[1,:]*(MAX_ADDMUT/100.0)
 # results to be saved
 lpoly = np.zeros((N,6)) # (x1,x2,y1,y2,stroke,fitness)
 data = list() # list of fitness values
-# we start from the white canvas to which we add polygons
+# we start from the white canvas to which we add line segments
 rfit = None # initial fitness value
 buffer = 0 # auxiliary variable to stop evolution if no changes occur
 count = 1 # number of objects in final image
@@ -95,22 +93,22 @@ images = [] # list of image used for animation process
 if generate_gif:
     images.append(gen_img)
 
-# repeat, until we reached specified number of polygons
+# repeat, until we reached specified number of line segments
 while(count<=N):
     # initial population generation
     NewPop = genLinespop(24, Amp, OneSpace)
     # first fitness evaluation
-    fitness = gslines_sequentialFitness_v3(NewPop, orig_img, gen_img, rfit, LINE_WIDTH, BLEND_MODE)
+    fitness = evalFitness(NewPop, orig_img, gen_img, rfit, LINE_WIDTH, BLEND_MODE)
     
     # start of genetic optimization process
     for i in range(NEvo):  # high enough value (we expect an early stop)
         OldPop = np.copy(NewPop)    # save population and fitness from previous generation
         fitnessOld = np.copy(fitness) 
-        PartNewPop1, PartNewFit1 = selbest(OldPop, fitness, [3,2,1])    # select best polygons
-        PartNewPop2, PartNewFit2 = selsus(OldPop, fitness, 18)
+        PartNewPop1, PartNewFit1 = selbest(OldPop, fitness, [3*MLTPL_EVO_PARAMS,2*MLTPL_EVO_PARAMS,1*MLTPL_EVO_PARAMS])    # select best polygons
+        PartNewPop2, PartNewFit2 = selsus(OldPop, fitness, 18*MLTPL_EVO_PARAMS)
         PartNewPop2 = mutLine(PartNewPop2, 0.2, Amp, OneSpace)   # additive mutation
         NewPop = np.concatenate((PartNewPop1, PartNewPop2), axis=0) # create new population
-        fitness = gslines_sequentialFitness_v3(NewPop, orig_img, gen_img, rfit, LINE_WIDTH, BLEND_MODE)
+        fitness = evalFitness(NewPop, orig_img, gen_img, rfit, LINE_WIDTH, BLEND_MODE)
         if (np.min(fitness) == np.min(fitnessOld)):
             buffer += 1 # if we stagnate start with counting
         else: 
@@ -119,20 +117,20 @@ while(count<=N):
         if (buffer >= MAX_BUFF):
             break
     
-    # add the best polygon in the image and continue evolution
+    # add the best line segment in the image and continue evolution
     priesenie, rfitnew = selbest(NewPop, fitness, [1])
     
     if(rfit is None):
         rfit = 1e6 # safe big value
-    # draw line only if it improves fitness
+    # draw line segment only if it improves fitness
     if(rfitnew < rfit):
         rfit = rfitnew
-        data.append(rfit) # save polygon info
+        data.append(rfit) # save line segment info
         draw = Image.new('RGBA', gen_img.size, (255,255,255,0))
         draw = draw.convert('L')
         pdraw = ImageDraw.Draw(draw)
         p = ((priesenie[0,2], priesenie[0,0]),(priesenie[0,3], priesenie[0,1]))
-        c = computeLineColor_v3(orig_img, p, LINE_WIDTH)
+        c = computeLineShade(orig_img, p, LINE_WIDTH)
         
         pdraw.line(p, fill=(c), width=LINE_WIDTH)
         gen_img = eval('Image4Layer.' + BLEND_MODE)(draw, gen_img)
@@ -147,7 +145,7 @@ fig, ax = plt.subplots()
 plt.plot(data, 'b', linewidth=0.5)
 plt.title('Image vectorization via genetic evolution')
 plt.xlabel('Number of generations')
-plt.ylabel('Fitness value')
+plt.ylabel('Fitness')
 plt.xlim(left=0)
 # grid and display settings
 plt.box(True)
@@ -160,7 +158,6 @@ plt.show()
 
 # find out the final solution
 riesenie, rfit = selbest(NewPop, fitness, [1])
-# print("Final solution: " + str(lpoly))
 print("Final fitness value: " + str(rfit[0]))
 print("--- Evolution lasted: %s seconds ---" % (time.time() - start_time))
 
