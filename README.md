@@ -51,9 +51,9 @@ https://pixabay.com/images/id-62967/
      <td>Present day in purple and selected day in pink</td>
   </tr>
   <tr>
-    <td valign="top"><img src="results/moraine_lake_2021-10-06_19.36.54.329515.gif"></td>
-    <td valign="top"><img src="results/moraine_lake_2021-10-06_19.36.54.329515.png"></td>
-    <td valign="top"><img src="images/moraine_lake.jpg" width="256"></td>
+    <td valign="center"><img src="results/moraine_lake_2021-10-06_19.36.54.329515.gif?raw=true"></td>
+    <td valign="center"><img src="results/moraine_lake_2021-10-06_19.36.54.329515.png"></td>
+    <td valign="center"><img src="images/moraine_lake.jpg" width="256"></td>
   </tr>
  </table>
 
