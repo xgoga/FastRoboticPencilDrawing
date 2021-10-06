@@ -44,10 +44,6 @@ Version 1
 * WikiImages. (2012, December 19). Charles Darwin [Photograph]. Pixabay.
 https://pixabay.com/images/id-62967/
 
-![alt-text-1](results/moraine_lake_2021-10-06_19.36.54.329515.gif "moraine_lake_2021-10-06_19.36.54.329515.gif") 
-![alt-text-2](results/moraine_lake_2021-10-06_19.36.54.329515.png "moraine_lake_2021-10-06_19.36.54.329515.png") 
-![alt-text-3](images/moraine_lake.jpg "moraine_lake.jpg") 
-
 <table>
   <tr>
     <td>First Screen Page</td>
@@ -57,7 +53,7 @@ https://pixabay.com/images/id-62967/
   <tr>
     <td valign="top"><img src="results/moraine_lake_2021-10-06_19.36.54.329515.gif"></td>
     <td valign="top"><img src="results/moraine_lake_2021-10-06_19.36.54.329515.png"></td>
-    <td valign="top"><img src="images/moraine_lake.jpg"></td>
+    <td valign="top"><img src="images/moraine_lake.jpg" width="256"></td>
   </tr>
  </table>
 
