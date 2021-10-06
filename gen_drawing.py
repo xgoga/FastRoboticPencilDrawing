@@ -171,7 +171,7 @@ gen2.save(u"./results/{}.pdf".format(img_str.rsplit('.', 1)[0] + '_' + uniq_file
 np.savetxt("./results/" + img_str.rsplit('.', 1)[0] + '_' + uniq_filename + ".csv", lpoly, delimiter=";")
 # save animation to the file
 if generate_gif:
-    images[0].save(u"./results/{}.gif".format(img_str.rsplit('.', 1)[0] + '_' + uniq_filename), save_all=True, append_images=images[1:], optimize=False, duration=40, loop=0)
+    images[0].save(u"./results/{}.gif".format(img_str.rsplit('.', 1)[0] + '_' + uniq_filename), save_all=True, append_images=images[1:], optimize=False, duration=10, loop=0)
 
 
 
