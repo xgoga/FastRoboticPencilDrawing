@@ -44,5 +44,10 @@ https://pixabay.com/images/id-62967/
     <td valign="center"><img src="results/dog_2021-10-06_18.54.53.204008.png"></td>
     <td valign="center"><img src="images/dog.jpg" width="256"></td>
   </tr>
+  <tr>
+    <td valign="center"><img src="results/rose_2021-10-06_21.26.35.258975.gif?raw=true"></td>
+    <td valign="center"><img src="results/rose_2021-10-06_21.26.35.258975.png"></td>
+    <td valign="center"><img src="images/rose.jpg" width="256"></td>
+  </tr>
  </table>
 
