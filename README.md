@@ -48,5 +48,19 @@ https://pixabay.com/images/id-62967/
 ![alt-text-2](results/moraine_lake_2021-10-06_19.36.54.329515.png "moraine_lake_2021-10-06_19.36.54.329515.png") 
 ![alt-text-3](images/moraine_lake.jpg "moraine_lake.jpg") 
 
+<table>
+  <tr>
+    <td>First Screen Page</td>
+     <td>Holiday Mention</td>
+     <td>Present day in purple and selected day in pink</td>
+  </tr>
+  <tr>
+    <td valign="top"><img src="results/moraine_lake_2021-10-06_19.36.54.329515.gif"></td>
+    <td valign="top"><img src="results/moraine_lake_2021-10-06_19.36.54.329515.png"></td>
+    <td valign="top"><img src="images/moraine_lake.jpg"></td>
+  </tr>
+ </table>
+
+
 * WikiImages. (2017, August 27). Moraine Lake [Photograph]. Pixabay.
 https://pixabay.com/images/id-2686353/
