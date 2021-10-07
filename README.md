@@ -45,6 +45,7 @@ https://pixabay.com/images/id-62967/
     <td valign="center"><img src="images/dog.jpg" width="256"></td>
   </tr>
   <tr>
+
     <td valign="center"><img src="results/kingfisher_2021-10-07_11.44.13.959988.gif?raw=true"></td>
     <td valign="center"><img src="results/kingfisher_2021-10-07_11.44.13.959988.png"></td>
     <td valign="center"><img src="images/kingfisher.jpg" width="256"></td>
