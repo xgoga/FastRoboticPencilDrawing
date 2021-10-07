@@ -45,9 +45,9 @@ https://pixabay.com/images/id-62967/
     <td valign="center"><img src="images/dog.jpg" width="256"></td>
   </tr>
   <tr>
-    <td valign="center"><img src="results/rose_2021-10-06_21.26.35.258975.gif?raw=true"></td>
-    <td valign="center"><img src="results/rose_2021-10-06_21.26.35.258975.png"></td>
-    <td valign="center"><img src="images/rose.jpg" width="256"></td>
+    <td valign="center"><img src="results/kingfisher_2021-10-07_11.44.13.959988.gif?raw=true"></td>
+    <td valign="center"><img src="results/kingfisher_2021-10-07_11.44.13.959988.png"></td>
+    <td valign="center"><img src="images/kingfisher.jpg" width="256"></td>
   </tr>
  </table>
 
