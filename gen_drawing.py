@@ -13,7 +13,7 @@ from PIL import Image, ImageDraw, ImageOps
 from image4layer import Image4Layer
 
 # ------------------------------ USER PARAMETERS --------------------------
-img_str = "rose.jpg"  # image to load (from ./images folder)
+img_str = "kingfisher.jpg"  # image to load (from ./images folder)
 basewidth = 256 # output size of generated image 
 deterministic_mode = True  # reproducible results [True, False]
 generate_gif = True # generate animation [True, False]
@@ -171,7 +171,7 @@ gen2.save(u"./results/{}.pdf".format(img_str.rsplit('.', 1)[0] + '_' + uniq_file
 np.savetxt("./results/" + img_str.rsplit('.', 1)[0] + '_' + uniq_filename + ".csv", lpoly, delimiter=";")
 # save animation to the file
 if generate_gif:
-    images[0].save(u"./results/{}.gif".format(img_str.rsplit('.', 1)[0] + '_' + uniq_filename), save_all=True, append_images=images[1:], optimize=False, duration=10, loop=0)
+    images[0].save(u"./results/{}.gif".format(img_str.rsplit('.', 1)[0] + '_' + uniq_filename), save_all=True, append_images=images[1:], optimize=False, duration=2, loop=0)
 
 
 
