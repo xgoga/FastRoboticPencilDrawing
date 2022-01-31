@@ -102,8 +102,9 @@ If you find this open source project useful, please reference in your paper:
       author={Adamik, Michal and Goga, Jozef and Pavlovicova, Jarmila
               and Babinec, Andrej and Sekaj, Ivan},
       journal={Robotics and Autonomous Systems},
-      year={2021},
+      year={2022},
       pages = {103912},
+	  volume = {148},
       issn = {0921-8890},
       doi = {https://doi.org/10.1016/j.robot.2021.103912},
       url = {https://www.sciencedirect.com/science/article/pii/S0921889021001974}
