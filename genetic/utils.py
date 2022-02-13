@@ -335,53 +335,43 @@ def evalPartialSimilarity(imglist):
     # evaluate only part of the image
     minX = int(np.min(gen[0:2]))
     maxX = int(np.max(gen[0:2]))
-    deltaX = int(maxX - minX)
+    deltaX = int(maxX - minX) + 1
     
     minY = int(np.min(gen[2:4]))
     maxY = int(np.max(gen[2:4]))
-    deltaY = int(maxY - minY)
-    
-    if (deltaX == 0) and (deltaY != 0):
-        deltaX = 1
-    elif (deltaX != 0) and (deltaY == 0):
-        deltaY = 1
-    elif (deltaX == 0) and (deltaY == 0):
-        return prevFit
-    
+    deltaY = int(maxY - minY) + 1
+
     # first evaluation
     if prevFit is None:
-        # evaluate full image
-
         # create a blank canvas
-        draw = Image.new('RGBA', geimg.size, COLOUR_WHITE)
+        draw = Image.new('RGBA', (deltaY, deltaX), (255,255,255,0))
         draw = draw.convert('L')
         pdraw = ImageDraw.Draw(draw)
-        
-        line = ((gen[2], gen[0]),(gen[3], gen[1]))
-        
-        # create new binary image mask
-        mask_img = Image.new('1', (geimg.size[0], geimg.size[1]), 0)
+        line = ((int(gen[2])-minY, int(gen[0])-minX),(int(gen[3])-minY, int(gen[1])-minX))
+        mask_img = Image.new('1', (draw.size[0], draw.size[1]), 0)
         ImageDraw.Draw(mask_img).line(line, fill=1, width=LINE_WIDTH)
         mask = np.array(mask_img)
-
-        tgrey = orimg[:,:] * mask
+        
+        tgrey = orimg[minX:minX+deltaX, minY:minY+deltaY] * mask
         tgrey = tgrey[tgrey != 0]
-
-        # if mask is an empty array
-        if (tgrey.size == 0):
-            return prevFit
         
         # compute the lighest shade of the line segment
         c = int(np.max(tgrey))
         
-        # draw one line segment
+        # create new line segment
         pdraw.line(line, fill=(c), width=LINE_WIDTH)
+        partgenImg = geimg.crop((minY, minX, minY + deltaY, minX + deltaX))
         
         # call blending mode function by name
-        out = eval('Image4Layer.' + BLEND_MODE)(draw, geimg)
-
+        out = eval('Image4Layer.' + BLEND_MODE)(draw, partgenImg)
+        
+        # evaluate full image
+        gout = Image.new('RGBA', geimg.size, COLOUR_WHITE)
+        gout = gout.convert('L') 
+        gout.paste(out, (minY, minX))
+        
         # compute similarity between original and generated image
-        return np.sqrt(np.sum((orimg - np.asarray(out, dtype=int))**2.0)/(out.size[0]*out.size[1])) / 255.0 
+        return np.sqrt(np.sum((orimg - np.asarray(gout, dtype=int))**2.0)/(gout.size[0]*gout.size[1])) / 255.0 
             
     else:
         # reconstruct previous similarity 
@@ -391,7 +381,7 @@ def evalPartialSimilarity(imglist):
         draw = Image.new('RGBA', (deltaY, deltaX), (255,255,255,0))
         draw = draw.convert('L')
         pdraw = ImageDraw.Draw(draw)
-        line = ((gen[2]-minY, gen[0]-minX),(gen[3]-minY, gen[1]-minX))
+        line = ((int(gen[2])-minY, int(gen[0])-minX),(int(gen[3])-minY, int(gen[1])-minX))
         mask_img = Image.new('1', (draw.size[0], draw.size[1]), 0)
         ImageDraw.Draw(mask_img).line(line, fill=1, width=LINE_WIDTH)
         mask = np.array(mask_img)
@@ -403,7 +393,7 @@ def evalPartialSimilarity(imglist):
         if (tgrey.size == 0):
             return prevFit
         
-        # compute the lighest shade of the line segment
+        # compute the lightest shade of the line segment
         c = int(np.max(tgrey))
         
         # create new line segment
@@ -412,47 +402,13 @@ def evalPartialSimilarity(imglist):
         
         # call blending mode function by name
         out = eval('Image4Layer.' + BLEND_MODE)(draw, partgenImg)
-
+        
         # substract similarity between previously generated image and target image + add newly computed part
         newSum = tSum - np.sum((orimg[minX:minX+deltaX, minY:minY+deltaY] - np.asarray(partgenImg, dtype=int))**2.0) + np.sum((orimg[minX:minX+deltaX, minY:minY+deltaY] - np.asarray(out, dtype=int))**2.0)
         if (newSum < 0):
             return prevFit
         else:
             return np.sqrt(newSum/(geimg.size[0]*geimg.size[1])) / 255.0
-
-
-def computeLineShade(orimg, gen, LINE_WIDTH):  
-    """
-    Extracts the shade of grey for line segment rendering from the image template.
-    
-    Args:
-            
-        orimg: Template image
-        
-        gen: The genetic information of current chromosome (coordinates)
-        
-        LINE_WIDTH: The width of the line segments (in pixels)
-            
-    Returns:
-        
-        The shade of grey for the specified line segment <0, 255>
-        
-    """
-    
-    line = ((gen[0][0], gen[0][1]),(gen[1][0], gen[1][1]))
-    
-    # create new binary image mask
-    mask_img = Image.new('1', (orimg.shape[1], orimg.shape[0]), 0)
-    ImageDraw.Draw(mask_img).line(line, fill=1, width=LINE_WIDTH)
-    mask = np.array(mask_img)
-
-    tgrey = orimg[:,:] * mask
-    tgrey = tgrey[tgrey != 0]
-    if (tgrey.size == 0):
-        return 255
-    
-    # return the lightest shade
-    return int(np.max(tgrey))
 
 
 

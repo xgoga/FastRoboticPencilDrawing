@@ -49,23 +49,23 @@ Data `.csv` file header:
      <td><strong><em>Original template</em></strong></td>
   </tr>
   <tr>
-    <td valign="center"><img src="results/moraine_lake_2021-10-07_13.18.29.979417.gif?raw=true"></td>
-    <td valign="center"><img src="results/moraine_lake_2021-10-07_13.18.29.979417.png"></td>
+    <td valign="center"><img src="results/moraine_lake_2022-02-13_16.56.08.447562.gif?raw=true"></td>
+    <td valign="center"><img src="results/moraine_lake_2022-02-13_16.56.08.447562.png"></td>
     <td valign="center"><img src="images/moraine_lake.jpg" width="256"></td>
   </tr>
   <tr>
-    <td valign="center"><img src="results/Darwin_enhanced_2021-10-07_14.36.07.691697.gif?raw=true"></td>
-    <td valign="center"><img src="results/Darwin_enhanced_2021-10-07_14.36.07.691697.png"></td>
+    <td valign="center"><img src="results/Darwin_enhanced_2022-02-13_16.42.46.246147.gif?raw=true"></td>
+    <td valign="center"><img src="results/Darwin_enhanced_2022-02-13_16.42.46.246147.png"></td>
     <td valign="center"><img src="images/Darwin_enhanced.jpg" width="256"></td>
   </tr>
   <tr>
-    <td valign="center"><img src="results/dog_2021-10-07_12.49.14.456988.gif?raw=true"></td>
-    <td valign="center"><img src="results/dog_2021-10-07_12.49.14.456988.png"></td>
+    <td valign="center"><img src="results/dog_2022-02-13_17.18.00.671460.gif?raw=true"></td>
+    <td valign="center"><img src="results/dog_2022-02-13_17.18.00.671460.png"></td>
     <td valign="center"><img src="images/dog.jpg" width="256"></td>
   </tr>
   <tr>
-    <td valign="center"><img src="results/kingfisher_2021-10-07_12.12.09.425701.gif?raw=true"></td>
-    <td valign="center"><img src="results/kingfisher_2021-10-07_12.12.09.425701.png"></td>
+    <td valign="center"><img src="results/kingfisher_2022-02-13_17.33.58.817652.gif?raw=true"></td>
+    <td valign="center"><img src="results/kingfisher_2022-02-13_17.33.58.817652.png"></td>
     <td valign="center"><img src="images/kingfisher.jpg" width="256"></td>
   </tr>
  </table>
@@ -90,7 +90,7 @@ https://pixabay.com/images/id-2046453/
 The code was tested under `Python>=3.7` and uses these modules:
 
 - numpy >= 1.18.5
-- Pillow >= 6.0.0
+- Pillow >= 7.2.0
 - matplotlib >= 3.2.1
 - image4layer >= 0.43.4
 

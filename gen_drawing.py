@@ -107,7 +107,7 @@ start_time = time.time()
 gen_img = Image.new('RGBA', (orig_img.shape[1], orig_img.shape[0]), COLOUR_WHITE)
 gen_img = gen_img.convert('L') # canvas
 
-# definition of search space limitations (for one polygon only)
+# definition of search space limitations (for one line segment only)
 OneSpace = np.concatenate((np.zeros((1,4)),           # mininum
                         np.array([[orig_img.shape[0]-1, orig_img.shape[0]-1, orig_img.shape[1]-1, orig_img.shape[1]-1]])), axis=0)  # maximum
 # range of changes for the additive mutation
@@ -134,7 +134,7 @@ while(count<=N):
     for i in range(NEvo):  # high enough value (we expect an early stop)
         OldPop = np.copy(NewPop)    # save population and fitness from previous generation
         fitnessOld = np.copy(fitness) 
-        PartNewPop1, PartNewFit1 = selbest(OldPop, fitness, [3*MLTPL_EVO_PARAMS,2*MLTPL_EVO_PARAMS,1*MLTPL_EVO_PARAMS])    # select best polygons
+        PartNewPop1, PartNewFit1 = selbest(OldPop, fitness, [3*MLTPL_EVO_PARAMS,2*MLTPL_EVO_PARAMS,1*MLTPL_EVO_PARAMS])    # select best lines
         PartNewPop2, PartNewFit2 = selsus(OldPop, fitness, 18*MLTPL_EVO_PARAMS)
         PartNewPop2 = mutLine(PartNewPop2, MUT_RATE/100.0, Amp, OneSpace)   # additive mutation
         NewPop = np.concatenate((PartNewPop1, PartNewPop2), axis=0) # create new population
@@ -156,16 +156,39 @@ while(count<=N):
     if(rfitnew < rfit):
         rfit = rfitnew
         data.append(rfit) # save line segment info
-        draw = Image.new('RGBA', gen_img.size, (255,255,255,0))
+        
+        minX = int(np.min([psol[0,0],psol[0,1]]))
+        maxX = int(np.max([psol[0,0],psol[0,1]]))
+        deltaX = int(maxX - minX) + 1
+        
+        minY = int(np.min([psol[0,2],psol[0,3]]))
+        maxY = int(np.max([psol[0,2],psol[0,3]]))
+        deltaY = int(maxY - minY) + 1
+        
+        draw = Image.new('RGBA', (deltaY, deltaX), (255,255,255,0))
         draw = draw.convert('L')
         pdraw = ImageDraw.Draw(draw)
-        p = ((psol[0,2], psol[0,0]),(psol[0,3], psol[0,1]))
-        c = computeLineShade(orig_img, p, LINE_WIDTH)
+        p = ((int(psol[0,2])-minY, int(psol[0,0])-minX),(int(psol[0,3])-minY, int(psol[0,1])-minX))
+        mask_img = Image.new('1', (draw.size[0], draw.size[1]), 0)
+        ImageDraw.Draw(mask_img).line(p, fill=1, width=LINE_WIDTH)
+        mask = np.array(mask_img)
         
+        tgrey = orig_img[minX:minX+deltaX, minY:minY+deltaY] * mask
+        tgrey = tgrey[tgrey != 0]
+        
+        # compute the lightest shade of the line segment
+        c = int(np.max(tgrey))
+        
+        # create new line segment
         pdraw.line(p, fill=(c), width=LINE_WIDTH)
-        gen_img = eval('Image4Layer.' + BLEND_MODE)(draw, gen_img)
+        partgenImg = gen_img.crop((minY, minX, minY + deltaY, minX + deltaX))
+        
+        # call blending mode function by name
+        out = eval('Image4Layer.' + BLEND_MODE)(draw, partgenImg)
+        gen_img.paste(out, (minY, minX))
+        
         print("# " + str(count) + " Fitness: " + str(rfit))
-        lpoly[count-1,:] = np.concatenate(np.array((psol[0,2], psol[0,3], psol[0,0], psol[0,1], 255-c, rfit[0])).reshape(6,1))
+        lpoly[count-1,:] = np.concatenate(np.array((int(psol[0,2]), int(psol[0,3]), int(psol[0,0]), int(psol[0,1]), 255-c, rfit[0])).reshape(6,1))
         count += 1 # increment counter of drawn line segments
         if generate_gif:
             images.append(gen_img.convert('P'))
@@ -195,8 +218,6 @@ print("--- Evolution lasted: %s seconds ---" % (time.time() - start_time))
 uniq_filename = str(datetime.datetime.now().date()) + '_' + str(datetime.datetime.now().time()).replace(':', '.')
 out_path = u"./results/{}.png".format(img_str.rsplit('.', 1)[0] + '_' + uniq_filename)
 gen_img.save(out_path, dpi=(600,600))
-gen2 = gen_img.convert('RGB')
-gen2.save(u"./results/{}.pdf".format(img_str.rsplit('.', 1)[0] + '_' + uniq_filename))
 # save solution info to csv file
 np.savetxt("./results/" + img_str.rsplit('.', 1)[0] + '_' + uniq_filename + ".csv", lpoly, delimiter=";")
 # save the animation
