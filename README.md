@@ -34,7 +34,7 @@ BLEND_MODE = "darken" # available options: ["normal", "multiply", "screen", "ove
 # -------------------------------------------------------------------------
 ```
 
-by default, input templates are loaded from the `./images` folder. The output is a generated image according to the specification in `.png` and `.pdf` formats, including data `.csv` file and optional `.gif` animation all stored in the `./results` folder. The csv file contains coordinates of the line segments endpoints x<sub>1</sub>, x<sub>2</sub>, y<sub>1</sub>, y<sub>2</sub>, the intensity of the pencil pressure (zero represent no pressure and coincides with the white shade on the canvas)  and value of the fitness function after drawing the corresponding line segment in the generated image.
+by default, input templates are loaded from the `./images` folder. The output is a generated image according to the specification in `.png` format, including data `.csv` file and optional `.gif` animation all stored in the `./results` folder. The csv file contains coordinates of the line segments endpoints x<sub>1</sub>, x<sub>2</sub>, y<sub>1</sub>, y<sub>2</sub>, the intensity of the pencil pressure (zero represent no pressure and coincides with the white shade on the canvas)  and value of the fitness function after drawing the corresponding line segment in the generated image.
 
 Data `.csv` file header:
 | <sup>x<sub>1</sub> \<0, image width-1\> </sup> | <sup>x<sub>2</sub> \<0, image width-1\> </sup> | <sup>y<sub>1</sub> \<0, image height\-1></sup> | <sup>y<sub>2</sub> \<0, image height-1\> </sup> | <sup>Pencil pressure \<0, 255\> </sup> | <sup>Fitness value</sup> |
@@ -117,12 +117,12 @@ The research behind this work was conducted by:
 
 at 
 
-[<img src="https://irisdata.fei.stuba.sk/images/FEI_logo_t3.png" width="500"/>](https://www.fei.stuba.sk/english.html?page_id=793)
+[<img src="images/logos/STU-FEI-anfh.png" width="500"/>](https://www.fei.stuba.sk/english.html?page_id=793)
 
 in collaboration with 
 
-  [<img src="http://nacero.sk/wp-content/uploads/2015/04/logo_head_h100px.png" width="75"/>](http://nacero.sk/language/en/) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  [<img src="http://nacero.sk/wp-content/uploads/2020/06/DIH_SC_Logo-Regular-300x150.png" width="150"/>](https://www.dih.stuba.sk) 
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  [<img src="https://www.cvtisr.sk/buxus/images/design/logo3_en.png" width="90"/>](https://www.cvtisr.sk/en.html?page_id=58) 
+  [<img src="images/logos/logo_head_h100px.jpg" width="75"/>](http://nacero.sk/language/en/) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  [<img src="images/logos/DIH_SC_Logo-Regular-300x150.jpg" width="150"/>](https://www.dih.stuba.sk) 
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  [<img src="images/logos/logo3_en.jpg" width="90"/>](https://www.cvtisr.sk/en.html?page_id=58) 
   
 
 
