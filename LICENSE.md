@@ -5,7 +5,7 @@ Michal Adamik, Jozef Goga, Jarmila Pavlovicova, Andrej Babinec, Ivan Sekaj
 
 Faculty of Electrical Engineering and Information Technology 
 of the Slovak University of Technology in Bratislava
-Ilkovicova 3, 812 19 Bratislava 1, Slovak Republic
+Ilkovicova 3, 841 04 Bratislava, Slovak Republic
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
